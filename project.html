@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Case Study &amp; Design Breakdown | Shahana Naveed</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:wght@600;700&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#111417",
+                        "secondary-container": "#00eefc",
+                        "primary-fixed": "#dde1ff",
+                        "background": "#111417",
+                        "on-surface-variant": "#c3c5d9",
+                        "primary-container": "#0052ff",
+                        "inverse-on-surface": "#2e3134",
+                        "tertiary-fixed-dim": "#b9c8de",
+                        "on-primary": "#002682",
+                        "surface-container-low": "#191c1f",
+                        "inverse-primary": "#004ced",
+                        "on-background": "#e1e2e7",
+                        "primary-fixed-dim": "#b7c4ff",
+                        "tertiary": "#b9c8de",
+                        "surface-container-highest": "#323539",
+                        "on-primary-fixed": "#001452",
+                        "on-tertiary-fixed-variant": "#39485a",
+                        "on-primary-fixed-variant": "#0038b6",
+                        "error-container": "#93000a",
+                        "tertiary-fixed": "#d4e4fa",
+                        "on-secondary-fixed-variant": "#004f54",
+                        "error": "#ffb4ab",
+                        "surface-container": "#1d2023",
+                        "tertiary-container": "#58677a",
+                        "primary": "#b7c4ff",
+                        "on-surface": "#e1e2e7",
+                        "on-tertiary-container": "#d7e6fc",
+                        "on-secondary": "#00363a",
+                        "inverse-surface": "#e1e2e7",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-container": "#00686f",
+                        "on-tertiary-fixed": "#0d1c2d",
+                        "surface-container-lowest": "#0c0e12",
+                        "on-primary-container": "#dfe3ff",
+                        "secondary-fixed": "#7df4ff",
+                        "on-secondary-fixed": "#002022",
+                        "on-tertiary": "#233143",
+                        "secondary": "#d3fbff",
+                        "outline": "#8d90a2",
+                        "surface-variant": "#323539",
+                        "surface-tint": "#b7c4ff",
+                        "surface": "#111417",
+                        "surface-bright": "#37393d",
+                        "surface-container-high": "#282a2e",
+                        "outline-variant": "#434656",
+                        "secondary-fixed-dim": "#00dbe9",
+                        "on-error": "#690005"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "section-gap-mobile": "38px",
+                        "section-gap-desktop": "70px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "code-sm": ["Inter"],
+                        "display-lg-mobile": ["Playfair Display"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Playfair Display"],
+                        "display-lg": ["Playfair Display"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "code-sm": ["13px", { "lineHeight": "1.4", "fontWeight": "400" }],
+                        "display-lg-mobile": ["48px", { "lineHeight": "1.1", "fontWeight": "700" }],
+                        "headline-md": ["32px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-lg": ["48px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "display-lg": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "500" }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            background-color: #111417;
+            color: #e1e2e7;
+            scroll-behavior: smooth;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(183, 196, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(0, 219, 233, 0.3);
+            box-shadow: 0 0 40px rgba(0, 82, 255, 0.1);
+        }
+
+        .glow-bg {
+            position: absolute;
+            width: 40vw;
+            height: 40vw;
+            background: radial-gradient(circle, rgba(0, 82, 255, 0.08) 0%, rgba(17, 20, 23, 0) 70%);
+            z-index: -1;
+            filter: blur(60px);
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0c0e12;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #0052ff;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body class="font-body-md text-body-md overflow-x-hidden">
+    <!-- Top Navigation Bar -->
+    <header
+        class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/20 shadow-[0_8px_32px_0_rgba(0,82,255,0.1)]">
+        <div class="flex justify-between items-center max-w-container-max mx-auto px-gutter h-20">
+            <div class="font-headline-lg text-primary tracking-tighter">SHAHANA.</div>
+            <nav class="hidden md:flex items-center gap-8 font-label-md text-label-md">
+                <a class="text-on-surface-variant hover:text-on-surface transition-colors" href="index.html">Home</a>
+                <a class="text-on-surface-variant hover:text-on-surface transition-colors" href="skills.html">Skills</a>
+                <a class="text-primary font-bold border-b-2 border-primary pb-1" href="project.html">Projects</a>
+                <a class="text-on-surface-variant hover:text-on-surface transition-colors"
+                    href="services.html">Services</a>
+                <a class="text-on-surface-variant hover:text-on-surface transition-colors"
+                    href="contact.html">Contact</a>
+                <a class="text-on-surface-variant hover:text-on-surface transition-colors" href="resume.html">Resume</a>
+            </nav>
+            <div class="flex items-center space-x-6">
+                <a href="contact.html"
+                    class="bg-primary-container text-on-primary-container px-6 py-2 rounded-lg font-label-md uppercase tracking-widest hover:scale-105 active:scale-95 transition-all inline-block">
+                    Hire Me
+                </a>
+            </div>
+        </div>
+    </header>
+    <!-- Background Atmospheric Glows -->
+    <div class="glow-bg top-0 left-[-10%] animate-pulse"></div>
+    <div class="glow-bg top-[30%] right-[-10%] opacity-50"></div>
+    <div class="glow-bg bottom-[10%] left-[20%]"></div>
+    <main class="relative z-10">
+        <!-- Hero Section -->
+        <section
+            class="pt-40 pb-section-gap-desktop max-w-7xl mx-auto px-6 text-center transition-all duration-700 opacity-100 translate-y-0 mb-24">
+            <h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-8">
+                Case Study &amp; <span class="text-primary">Design Breakdown</span>
+            </h1>
+            <p class="font-body-lg text-body-lg text-on-surface-variant max-w-3xl mx-auto mb-12">
+                Exploring how thoughtful UI/UX decisions, responsive layouts, and performance-focused improvements can
+                enhance digital experiences in the modern era.
+            </p>
+            <div class="glass-card rounded-3xl p-4 md:p-8 aspect-video overflow-hidden">
+                <img alt="Dashboard Mockup" class="w-full h-full object-cover rounded-2xl shadow-2xl"
+                    data-alt="A high-fidelity cinematic 3D mockup of a sleek web dashboard floating in a dark, atmospheric studio. The UI design features neon cyan accents and deep navy backgrounds with glassmorphism effects. Soft, diffuse royal blue lighting hits the edges of the curved displays, creating a futuristic, high-end technical aesthetic for a professional portfolio showcase."
+                    src="F:\Data\Shahana\Shahana ke folder and files\Portfolio\assets\dashboard-mockup.png">
+            </div>
+        </section>
+        <!-- Project Overview -->
+        <section
+            class="py-section-gap-desktop max-w-7xl mx-auto px-6 transition-all duration-700 opacity-100 translate-y-0 mb-24">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-card p-10 rounded-3xl md:col-span-1 space-y-8 h-full">
+                    <div>
+                        <span class="text-secondary uppercase tracking-[0.2em] font-label-md">Project Type</span>
+                        <p class="font-headline-md text-headline-md mt-2">Digital Fintech Audit</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div>
+                            <span class="text-secondary uppercase tracking-[0.2em] font-label-md">Role</span>
+                            <p class="text-on-surface mt-1">Lead UI/UX</p>
+                        </div>
+                        <div>
+                            <span class="text-secondary uppercase tracking-[0.2em] font-label-md">Timeline</span>
+                            <p class="text-on-surface mt-1">3 Weeks</p>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="text-secondary uppercase tracking-[0.2em] font-label-md">Tools Used</span>
+                        <div class="flex flex-wrap gap-2 mt-3">
+                            <span
+                                class="bg-surface-variant/40 text-primary text-code-sm px-3 py-1 rounded-full border border-outline-variant/30">Figma</span>
+                            <span
+                                class="bg-surface-variant/40 text-primary text-code-sm px-3 py-1 rounded-full border border-outline-variant/30">Framer</span>
+                            <span
+                                class="bg-surface-variant/40 text-primary text-code-sm px-3 py-1 rounded-full border border-outline-variant/30">React.js</span>
+                            <span
+                                class="bg-surface-variant/40 text-primary text-code-sm px-3 py-1 rounded-full border border-outline-variant/30">Tailwind</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card p-10 rounded-3xl md:col-span-2">
+                    <h2 class="font-headline-md text-headline-md mb-8 text-primary">Focus Areas</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div
+                            class="flex items-center space-x-4 p-4 rounded-2xl bg-surface-container-low border border-outline-variant/10">
+                            <span class="material-symbols-outlined text-secondary-container">devices</span>
+                            <span class="font-body-md">Responsive Design</span>
+                        </div>
+                        <div
+                            class="flex items-center space-x-4 p-4 rounded-2xl bg-surface-container-low border border-outline-variant/10">
+                            <span class="material-symbols-outlined text-secondary-container">speed</span>
+                            <span class="font-body-md">Speed Optimization</span>
+                        </div>
+                        <div
+                            class="flex items-center space-x-4 p-4 rounded-2xl bg-surface-container-low border border-outline-variant/10">
+                            <span class="material-symbols-outlined text-secondary-container">auto_fix_high</span>
+                            <span class="font-body-md">UI/UX Improvements</span>
+                        </div>
+                        <div
+                            class="flex items-center space-x-4 p-4 rounded-2xl bg-surface-container-low border border-outline-variant/10">
+                            <span class="material-symbols-outlined text-secondary-container">search_check</span>
+                            <span class="font-body-md">Basic SEO Structure</span>
+                        </div>
+                        <div
+                            class="flex items-center space-x-4 p-4 rounded-2xl bg-surface-container-low border border-outline-variant/10 sm:col-span-2">
+                            <span class="material-symbols-outlined text-secondary-container">psychology</span>
+                            <span class="font-body-md">Strategic User Experience Mapping</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- The Problem -->
+        <section
+            class="py-section-gap-desktop bg-surface-container-lowest relative overflow-hidden transition-all duration-700 opacity-100 translate-y-0 mb-24">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="mb-16">
+                    <span class="text-error uppercase tracking-[0.2em] font-label-md">The Challenge</span>
+                    <h2 class="font-headline-lg text-headline-lg text-on-surface mt-4">Identifying Friction Points</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div
+                        class="p-8 rounded-3xl border border-error/20 bg-error/5 group hover:bg-error/10 transition-colors">
+                        <span class="material-symbols-outlined text-error text-4xl mb-4">history</span>
+                        <h3 class="font-headline-md text-body-lg font-bold mb-2">Outdated Design</h3>
+                        <p class="text-on-surface-variant text-body-md">Legacy aesthetics and heavy textures were
+                            creating a visual disconnect with modern brand values.</p>
+                    </div>
+                    <div
+                        class="p-8 rounded-3xl border border-error/20 bg-error/5 group hover:bg-error/10 transition-colors">
+                        <span class="material-symbols-outlined text-error text-4xl mb-4">mobile_off</span>
+                        <h3 class="font-headline-md text-body-lg font-bold mb-2">Poor Responsiveness</h3>
+                        <p class="text-on-surface-variant text-body-md">Mobile traffic suffered from broken layouts,
+                            tiny buttons, and unreadable text hierarchies.</p>
+                    </div>
+                    <div
+                        class="p-8 rounded-3xl border border-error/20 bg-error/5 group hover:bg-error/10 transition-colors">
+                        <span class="material-symbols-outlined text-error text-4xl mb-4">bolt</span>
+                        <h3 class="font-headline-md text-body-lg font-bold mb-2">Slow Loading</h3>
+                        <p class="text-on-surface-variant text-body-md">Unoptimized assets and bloated scripts resulted
+                            in high bounce rates and poor performance.</p>
+                    </div>
+                    <div
+                        class="p-8 rounded-3xl border border-error/20 bg-error/5 group hover:bg-error/10 transition-colors">
+                        <span class="material-symbols-outlined text-error text-4xl mb-4">grid_view</span>
+                        <h3 class="font-headline-md text-body-lg font-bold mb-2">Confusing Layout</h3>
+                        <p class="text-on-surface-variant text-body-md">Information was buried under layers of
+                            inconsistent navigation and illogical grouping.</p>
+                    </div>
+                    <div
+                        class="p-8 rounded-3xl border border-error/20 bg-error/5 group hover:bg-error/10 transition-colors">
+                        <span class="material-symbols-outlined text-error text-4xl mb-4">format_align_left</span>
+                        <h3 class="font-headline-md text-body-lg font-bold mb-2">Weak Hierarchy</h3>
+                        <p class="text-on-surface-variant text-body-md">Primary actions were competing with secondary
+                            elements, causing user decision fatigue.</p>
+                    </div>
+                    <div
+                        class="p-8 rounded-3xl border border-error/20 bg-error/5 group hover:bg-error/10 transition-colors">
+                        <span class="material-symbols-outlined text-error text-4xl mb-4">layers_clear</span>
+                        <h3 class="font-headline-md text-body-lg font-bold mb-2">Cluttered Interface</h3>
+                        <p class="text-on-surface-variant text-body-md">Overcrowded screens lacked negative space,
+                            overwhelming users and decreasing accessibility.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Research & Strategy -->
+        <section
+            class="py-section-gap-desktop max-w-7xl mx-auto px-6 transition-all duration-700 opacity-100 translate-y-0 mb-24">
+            <div class="flex flex-col md:flex-row gap-16 items-center">
+                <div class="w-full md:w-1/2">
+                    <span class="text-secondary-fixed uppercase tracking-[0.2em] font-label-md">The Strategy</span>
+                    <h2 class="font-headline-lg text-headline-lg text-on-surface mt-4 mb-8">Architecting the <span
+                            class="text-secondary-fixed">Solution</span></h2>
+                    <ul class="space-y-6">
+                        <li class="flex items-start space-x-4">
+                            <span class="material-symbols-outlined text-secondary-fixed mt-1">groups</span>
+                            <div>
+                                <h4 class="font-bold text-on-surface">User-centered Thinking</h4>
+                                <p class="text-on-surface-variant">Mapping personas and journey flows to ensure every
+                                    pixel serves a user goal.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start space-x-4">
+                            <span class="material-symbols-outlined text-secondary-fixed mt-1">view_quilt</span>
+                            <div>
+                                <h4 class="font-bold text-on-surface">Layout Restructuring</h4>
+                                <p class="text-on-surface-variant">Defining a rigid grid system to maintain consistency
+                                    across 50+ unique screens.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start space-x-4">
+                            <span class="material-symbols-outlined text-secondary-fixed mt-1">navigation</span>
+                            <div>
+                                <h4 class="font-bold text-on-surface">Better Navigation Flow</h4>
+                                <p class="text-on-surface-variant">Simplifying information architecture to reduce
+                                    average click-path by 40%.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="w-full md:w-1/2 grid grid-cols-2 gap-4">
+                    <div class="glass-card p-6 rounded-2xl flex flex-col items-center text-center">
+                        <span class="material-symbols-outlined text-primary text-4xl mb-2">auto_awesome</span>
+                        <span class="text-code-sm">Interface Simplification</span>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl flex flex-col items-center text-center mt-8">
+                        <span class="material-symbols-outlined text-primary text-4xl mb-2">rocket_launch</span>
+                        <span class="text-code-sm">Performance Uplift</span>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl flex flex-col items-center text-center -mt-8">
+                        <span class="material-symbols-outlined text-primary text-4xl mb-2">smartphone</span>
+                        <span class="text-code-sm">Mobile-First UI</span>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl flex flex-col items-center text-center">
+                        <span class="material-symbols-outlined text-primary text-4xl mb-2">analytics</span>
+                        <span class="text-code-sm">Data Driven Design</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Before & After Showcase -->
+        <section
+            class="py-section-gap-desktop bg-surface-dim transition-all duration-700 opacity-100 translate-y-0 mb-24">
+            <div class="max-w-7xl mx-auto px-6">
+                <h2 class="font-headline-lg text-headline-lg text-center mb-16">The Transformation</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <!-- Before -->
+                    <div class="space-y-4">
+                        <div
+                            class="relative rounded-3xl overflow-hidden border-2 border-outline-variant/20 grayscale brightness-75">
+                            <img alt="Before State" class="w-full h-[400px] object-cover"
+                                data-alt="A cluttered, low-contrast screenshot of an old web application from the 2010s. The interface has tiny, serif text, numerous confusing sidebar links, and a very flat, grey-on-grey color scheme. It looks outdated and lacks clear visual hierarchy or modern design principles."
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAC2Ce_c9ow5-Y5OxxKdJBWb6APTz8-LS1ID5HdoXr-Me2nMNn5OOp0bxwkniTesxi-E_2MpmhzhzxixB9d-8WBnvLjVn3_FUbZuZloWTpwWcpntSsfiIV1Yds_WfuMEY42eFvKtOz8O6v8un85ynfzKwiU2dptB5v5tjDVc1-dSPuHzTwxDb_0zOuONBJskmp92W3h_Sms0Gq5024GjgQIEamW0ymoUxdiaR5UxdHvi5bJuQ7Di35kequRX0x4MMamgngPCvMXSoM">
+                            <div
+                                class="absolute top-4 left-4 bg-error text-on-error px-4 py-1 rounded-full text-label-md font-bold uppercase">
+                                Legacy State</div>
+                        </div>
+                        <p class="text-on-surface-variant italic">Issues: Cluttered spacing, poor typography, and no
+                            mobile support.</p>
+                    </div>
+                    <!-- After -->
+                    <div class="space-y-4">
+                        <div
+                            class="relative rounded-3xl overflow-hidden border-2 border-primary/40 shadow-[0_0_40px_rgba(0,82,255,0.2)]">
+                            <img alt="After State" class="w-full h-[400px] object-cover"
+                                data-alt="A ultra-modern, professional web application interface designed with a dark mode glassmorphism theme. The UI showcases high-contrast typography, plenty of whitespace, vibrant blue accent buttons, and elegant card layouts with subtle shadows. The design is sleek, intuitive, and highly legible, representing a major aesthetic and functional upgrade."
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAn3CqGzBp9IPjjnuxbjRCY-WnD2HeN9nto2DJO7hwuzn5UrVJDoaXvDM0ap20FW5_QKrB30LL_vOqfJ4KUj_wwXWbfe9UhWcMRcMXxeYgo0zTBch6jBcoJIA5Y5HpAB-PZYqQYMkWu9b4Tt338jbqeYcQ8Efc2Wm8k63CcVH9hh0eW9oPgCAVtQMxZ6v00gEu4KdfR2np4yr8TSzdvVZQMx4cQ4nZUk2FbHFolyXDCAlxaS22NPnzK6HLPbMiiRNjCHLOEk71WmLs">
+                            <div
+                                class="absolute top-4 left-4 bg-secondary-container text-on-secondary-container px-4 py-1 rounded-full text-label-md font-bold uppercase">
+                                Optimized State</div>
+                            <!-- Annotations -->
+                            <div class="absolute bottom-4 right-4 flex flex-col items-end space-y-2">
+                                <span
+                                    class="bg-surface/80 backdrop-blur-md px-3 py-1 rounded-lg text-code-sm border border-primary/20">Cleaner
+                                    Spacing</span>
+                                <span
+                                    class="bg-surface/80 backdrop-blur-md px-3 py-1 rounded-lg text-code-sm border border-primary/20">Inter
+                                    Typography</span>
+                                <span
+                                    class="bg-surface/80 backdrop-blur-md px-3 py-1 rounded-lg text-code-sm border border-primary/20">Fluid
+                                    Grid</span>
+                            </div>
+                        </div>
+                        <p class="text-on-surface-variant italic">Solution: Generous whitespace, bold hierarchies, and
+                            fully responsive components.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Key Improvements -->
+        <section
+            class="py-section-gap-desktop max-w-7xl mx-auto px-6 transition-all duration-700 opacity-100 translate-y-0 mb-24">
+            <h2 class="font-headline-lg text-headline-lg text-center mb-16">Key Performance Metrics</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="glass-card p-8 rounded-3xl text-center group cursor-default">
+                    <div class="text-secondary-fixed text-4xl font-display-lg mb-2">99.9%</div>
+                    <p class="font-label-md text-on-surface-variant uppercase tracking-widest">Accessibility Score</p>
+                </div>
+                <div class="glass-card p-8 rounded-3xl text-center group cursor-default">
+                    <div class="text-secondary-fixed text-4xl font-display-lg mb-2">-4.2s</div>
+                    <p class="font-label-md text-on-surface-variant uppercase tracking-widest">Load Time Reduction</p>
+                </div>
+                <div class="glass-card p-8 rounded-3xl text-center group cursor-default">
+                    <div class="text-secondary-fixed text-4xl font-display-lg mb-2">+65%</div>
+                    <p class="font-label-md text-on-surface-variant uppercase tracking-widest">User Engagement</p>
+                </div>
+                <div class="glass-card p-8 rounded-3xl text-center group cursor-default">
+                    <div class="text-secondary-fixed text-4xl font-display-lg mb-2">0</div>
+                    <p class="font-label-md text-on-surface-variant uppercase tracking-widest">Dead-end Paths</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+                <!-- Detailed Improvement Cards -->
+                <div
+                    class="p-6 rounded-2xl bg-surface-container hover:bg-surface-container-high transition-colors border border-outline-variant/10">
+                    <span class="material-symbols-outlined text-secondary mb-4">devices</span>
+                    <h5 class="font-bold mb-2">Responsive Design</h5>
+                    <p class="text-on-surface-variant text-code-sm">Seamless experience from 320px to 4k displays.</p>
+                </div>
+                <div
+                    class="p-6 rounded-2xl bg-surface-container hover:bg-surface-container-high transition-colors border border-outline-variant/10">
+                    <span class="material-symbols-outlined text-secondary mb-4">cleaning_services</span>
+                    <h5 class="font-bold mb-2">Cleaner Interface</h5>
+                    <p class="text-on-surface-variant text-code-sm">Removed 60% of redundant visual noise.</p>
+                </div>
+                <div
+                    class="p-6 rounded-2xl bg-surface-container hover:bg-surface-container-high transition-colors border border-outline-variant/10">
+                    <span class="material-symbols-outlined text-secondary mb-4">search</span>
+                    <h5 class="font-bold mb-2">SEO Structure</h5>
+                    <p class="text-on-surface-variant text-code-sm">Semantic HTML5 for better indexation.</p>
+                </div>
+                <div
+                    class="p-6 rounded-2xl bg-surface-container hover:bg-surface-container-high transition-colors border border-outline-variant/10">
+                    <span class="material-symbols-outlined text-secondary mb-4">ads_click</span>
+                    <h5 class="font-bold mb-2">Conversion Focused</h5>
+                    <p class="text-on-surface-variant text-code-sm">CTA buttons repositioned for optimal thumb reach.
+                    </p>
+                </div>
+            </div>
+        </section>
+        <!-- Problem Solving Process -->
+        <section
+            class="py-section-gap-desktop bg-surface-container-low overflow-hidden transition-all duration-700 opacity-100 translate-y-0 mb-24">
+            <div class="max-w-7xl mx-auto px-6">
+                <h2 class="font-headline-lg text-headline-lg mb-20 text-center">The Creative Workflow</h2>
+                <div class="relative">
+                    <!-- Progress Line -->
+                    <div
+                        class="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent hidden md:block">
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-8 relative z-10">
+                        <div class="flex flex-col items-center group">
+                            <div
+                                class="w-16 h-16 rounded-full bg-surface-container-highest border-2 border-primary/20 flex items-center justify-center mb-6 group-hover:border-primary transition-all duration-300">
+                                <span class="material-symbols-outlined text-primary">search</span>
+                            </div>
+                            <span class="font-bold text-on-surface">Research</span>
+                            <span class="text-code-sm text-on-surface-variant mt-2 text-center px-4">User audits &amp;
+                                competition analysis</span>
+                        </div>
+                        <div class="flex flex-col items-center group">
+                            <div
+                                class="w-16 h-16 rounded-full bg-surface-container-highest border-2 border-primary/20 flex items-center justify-center mb-6 group-hover:border-primary transition-all duration-300">
+                                <span class="material-symbols-outlined text-primary">edit_square</span>
+                            </div>
+                            <span class="font-bold text-on-surface">Wireframe</span>
+                            <span class="text-code-sm text-on-surface-variant mt-2 text-center px-4">Mapping the
+                                skeletal structure</span>
+                        </div>
+                        <div class="flex flex-col items-center group">
+                            <div
+                                class="w-16 h-16 rounded-full bg-surface-container-highest border-2 border-primary/20 flex items-center justify-center mb-6 group-hover:border-primary transition-all duration-300">
+                                <span class="material-symbols-outlined text-primary">palette</span>
+                            </div>
+                            <span class="font-bold text-on-surface">UI Design</span>
+                            <span class="text-code-sm text-on-surface-variant mt-2 text-center px-4">Crafting the visual
+                                layer</span>
+                        </div>
+                        <div class="flex flex-col items-center group">
+                            <div
+                                class="w-16 h-16 rounded-full bg-surface-container-highest border-2 border-primary/20 flex items-center justify-center mb-6 group-hover:border-primary transition-all duration-300">
+                                <span class="material-symbols-outlined text-primary">code</span>
+                            </div>
+                            <span class="font-bold text-on-surface">Development</span>
+                            <span class="text-code-sm text-on-surface-variant mt-2 text-center px-4">Translating design
+                                to React</span>
+                        </div>
+                        <div class="flex flex-col items-center group">
+                            <div
+                                class="w-16 h-16 rounded-full bg-surface-container-highest border-2 border-primary/20 flex items-center justify-center mb-6 group-hover:border-primary transition-all duration-300">
+                                <span class="material-symbols-outlined text-primary">speed</span>
+                            </div>
+                            <span class="font-bold text-on-surface">Optimization</span>
+                            <span class="text-code-sm text-on-surface-variant mt-2 text-center px-4">Polishing and
+                                performance</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Final Reflection -->
+        <section
+            class="py-section-gap-desktop max-w-7xl mx-auto px-6 text-center transition-all duration-700 opacity-100 translate-y-0 mb-24">
+            <h2 class="font-headline-md text-headline-md mb-8">What I Learned</h2>
+            <div class="glass-card p-12 rounded-[40px] relative overflow-hidden">
+                <div
+                    class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent">
+                </div>
+                <p class="font-body-lg text-body-lg text-on-surface leading-relaxed">
+                    Through this project, I focused on creating a cleaner user experience, improving responsiveness
+                    across devices, and building a more structured visual hierarchy. The redesign reinforced the
+                    importance of balancing aesthetics with usability to deliver a better overall experience.
+                </p>
+                <div class="mt-8 flex items-center justify-center space-x-4">
+                    <div class="text-left">
+                        <p class="font-bold">— Shahana</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- CTA Section -->
+        <section class="py-section-gap-desktop transition-all duration-700 opacity-100 translate-y-0">
+            <div class="max-w-7xl mx-auto px-6">
+                <div
+                    class="bg-primary-container rounded-[48px] p-12 md:p-24 text-center relative overflow-hidden group">
+                    <!-- Decor -->
+                    <div class="absolute inset-0 bg-gradient-to-br from-primary-container to-[#0038b6] opacity-90">
+                    </div>
+                    <div
+                        class="absolute -top-24 -right-24 w-96 h-96 bg-secondary-container/20 rounded-full blur-[80px] group-hover:scale-110 transition-transform duration-700">
+                    </div>
+                    <div class="relative z-10">
+                        <h2
+                            class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-primary-container mb-6">
+                            Need a Modern Website Experience?</h2>
+                        <p class="font-body-lg text-body-lg text-on-primary-container/80 max-w-2xl mx-auto mb-12">
+                            Let’s create clean, responsive, and user-focused digital experiences together. Your product
+                            deserves a world-class interface.
+                        </p>
+                        <!-- <div class="flex flex-wrap justify-center gap-6">
+                            <button
+                                class="bg-on-primary-container text-primary-container px-12 py-5 rounded-2xl font-label-md uppercase tracking-widest hover:bg-secondary-fixed transition-all duration-300">Let's
+                                Talk</button>
+                            <button
+                                class="bg-transparent border-2 border-on-primary-container/30 text-on-primary-container px-12 py-5 rounded-2xl font-label-md uppercase tracking-widest hover:bg-on-primary-container/10 transition-all duration-300">View My Services</button>
+                        </div> -->
+                        <div class="flex flex-wrap justify-center gap-6">
+
+                            <a href="contact.html"
+                                class="bg-on-primary-container text-primary-container px-12 py-5 rounded-2xl font-label-md uppercase tracking-widest hover:bg-secondary-fixed transition-all duration-300">
+                                Let's Talk
+                            </a>
+
+                            <a href="skills.html"
+                                class="bg-transparent border-2 border-on-primary-container/30 text-on-primary-container px-12 py-5 rounded-2xl font-label-md uppercase tracking-widest hover:bg-on-primary-container/10 transition-all duration-300">
+                                View My Skills
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer class="w-full py-section-gap-desktop border-t border-outline-variant/10 bg-surface-container-lowest">
+        <div class="max-w-container-max mx-auto px-gutter grid grid-cols-1 md:grid-cols-12 gap-12">
+            <div class="md:col-span-4 space-y-6">
+                <a class="font-headline-lg text-headline-md text-primary " href="#top">Shahana Naveed.</a>
+                <p class="font-body-md text-on-surface-variant">
+                    Merging the art of luxury with the science of modern interfaces. Architecting digital legacies since
+                    2021.
+                </p>
+            </div>
+            <div class="md:col-span-2 space-y-4">
+                <h4 class="font-label-md text-primary uppercase tracking-widest">Sitemap</h4>
+                <nav class="flex flex-col space-y-3 font-body-md text-on-surface-variant">
+                    <a class="hover:text-secondary-container transition-colors" href="index.html">Home</a>
+                    <a class="hover:text-secondary-container transition-colors" href="skills.html">Skills</a>
+                    <a class="hover:text-secondary-container transition-colors" href="project.html">Projects</a>
+                    <a class="hover:text-secondary-container transition-colors" href="services.html">Services</a>
+                    <a class="hover:text-secondary-container transition-colors" href="contact.html">Contact</a>
+                    <a class="hover:text-secondary-container transition-colors" href="resume.html">Resume</a>
+                </nav>
+            </div>
+            <div class="md:col-span-2 space-y-4">
+                <h4 class="font-label-md text-primary uppercase tracking-widest">Connect</h4>
+                <nav class="flex flex-col space-y-3 font-body-md text-on-surface-variant">
+                    <a class="hover:text-secondary-container transition-colors"
+                        href="https://www.etsy.com/people/6wmosv4j5ypb9qch?ref=hdr_user_menu-profile"
+                        target="_blank">Etsy</a>
+                    <a class="hover:text-secondary-container transition-colors"
+                        href="https://www.linkedin.com/in/shahana-naveed" target="_blank">LinkedIn</a>
+                    <a class="hover:text-secondary-container transition-colors" href="https://dribbble.com/velmyra"
+                        target="_blank">Dribbble</a>
+                    <a class="hover:text-secondary-container transition-colors"
+                        href="https://github.com/velmyraofficial" target="_blank">GitHub</a>
+                </nav>
+            </div>
+            <div class="md:col-span-4 space-y-6">
+                <h3 class="font-headline-lg text-2xl md:text-3xl text-on-surface font-bold">Have an Idea in Mind?</h3>
+                <div class="flex flex-wrap gap-4 pt-2">
+                    <a class="px-6 py-3 bg-inverse-primary text-white font-label-md uppercase tracking-widest rounded-lg shadow-[0_0_20px_rgba(0,82,255,0.3)] backdrop-blur-md bg-opacity-90 hover:shadow-[0_0_30px_rgba(0,82,255,0.5)] transition-all duration-300"
+                        href="contact.html">
+                        Let's Collaborate
+                    </a>
+                    <a class="px-6 py-3 border border-outline-variant text-on-surface font-label-md uppercase tracking-widest rounded-lg backdrop-blur-sm hover:bg-white/5 hover:border-primary transition-all duration-300"
+                        href="contact.html">
+                        Hire Me
+                    </a>
+                </div>
+            </div>
+            <div class="md:col-span-12 mt-12 pt-8 border-t border-outline-variant/5 text-center">
+                <p class="text-on-surface-variant font-body-md text-body-md opacity-60">© 2025 Shahana Naveed — Crafted
+                    for the Future</p>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Micro-interaction for smooth reveal on scroll
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            section.classList.add('transition-all', 'duration-700', 'opacity-0', 'translate-y-10');
+            observer.observe(section);
+        });
+
+        // Parallax effect for the hero mockup
+        window.addEventListener('scroll', () => {
+            const mockup = document.querySelector('section img');
+            if (mockup) {
+                const scrolled = window.pageYOffset;
+                mockup.style.transform = `translateY(${scrolled * 0.05}px)`;
+            }
+        });
+    </script>
+
+
+
+
+</body>
+
+</html>
